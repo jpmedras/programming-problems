@@ -1,10 +1,10 @@
 <script setup>
-import ProblemSection from '../components/ProblemSection.vue'
+import ProblemTable from '../components/ProblemTable.vue'
 </script>
 
 <template>
   <div class="mural">
-    <ProblemSection />
+    <ProblemTable />
   </div>
 </template>
 
