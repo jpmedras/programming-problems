@@ -20,7 +20,7 @@
     },
     data() {
     return {
-      problems: null,
+      problem: null,
       topics: null,
       difficulties: null
     };
@@ -32,7 +32,8 @@
       })
         .then((response) => {
           response.json().then((data) => {
-            this.problems = data;
+            console.log(this.id)
+            this.problem = data.filter(x => x.id === this.id);
           });
         })
         .catch((err) => {
@@ -61,11 +62,6 @@
           console.error(err);
         });
     },
-
-    filter(data) {
-      return this.problems
-        .filter((problem) => problem[data.prop] == data.value)
-    }
   },
   beforeMount() {
    this.fetchData();

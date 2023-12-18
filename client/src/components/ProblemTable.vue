@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     goToProblemDetail(problemId) {
-      this.$router.push({ path: `/${problemId}` });
+      this.$router.push({ path: `/${problemId}`, params: {id: problemId} });
     },
     fetchData() {
       fetch('http://localhost:4000/problems', {
