@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 class Database {
     constructor(db_name) {
-        this.db = new sqlite3.Database("./db/" + db_name);
+        this.db = new sqlite3.Database("./models/" + db_name);
     }
 
     async get(table) {

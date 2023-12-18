@@ -1,11 +1,10 @@
 const db = require('../models/connection');
 
-const difficulties = db.get('difficulty');
+const table = 'difficulty'
 
 function getAll() {
-    return difficulties;
+    return db.get(table);
 }
-
 
 module.exports = {
     getAll

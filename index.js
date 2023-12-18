@@ -15,13 +15,23 @@ const problems = require('./routes/problems');
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'Running app!'
+        message: 'Running API!'
     });
 });
 
 app.get('/topics', (req, res) => {
     topics.getAll().then((topics) => {
         res.json(topics);
+    });
+});
+
+app.post('/topics', (req, res) => {
+    console.log(req.body);
+    topics.create(req.body).then((topic) => {
+        res.json(topic);
+    }).catch((error) => {
+        res.status(500);
+        res.json(error);
     });
 });
 
@@ -32,8 +42,8 @@ app.get('/difficulties', (req, res) => {
 });
 
 app.get('/problems', (req, res) => {
-    problems.getAll().then((problems) => {
-        res.json(problems);
+    problems.getAll().then((problem) => {
+        res.json(problem);
     });
 });
 

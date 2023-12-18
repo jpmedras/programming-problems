@@ -1,11 +1,9 @@
 const db = require('../models/connection');
 
 const table = 'problem'
-const problems = db.get(table);
-
 
 function getAll() {
-    return problems;
+    return db.get(table);
 }
 
 function create(problem) {
