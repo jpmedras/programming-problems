@@ -1,8 +1,8 @@
 <template>
     <div>
       <h2 v-if="problem.title" >{{ problem.title }}</h2>
-      <h3 v-if="problem.topic">Topic: {{ problem.topic }}</h3>
-      <h3 v-if="problem.difficulty">Difficulty: {{ problem.difficulty }}</h3>
+      <h3 v-if="problem.topic">Topic: {{ topics.find(x => x.id == problem.topic).name }}</h3>
+      <h3 v-if="problem.difficulty">Difficulty: {{ difficulties.find(x => x.id == problem.difficulty).name }}</h3>
       <p v-if="problem.input">Input Description: {{ problem.input }}</p>
       <p v-if="problem.output">Output Description: {{ problem.output }}</p>
       <p v-if="problem.time">Time Limit: {{ problem.time }}</p>

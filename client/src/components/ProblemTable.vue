@@ -10,8 +10,8 @@
     <tbody>
       <tr v-for="problem in problems" :key="problem.id" @click="goToProblemDetail(problem.id)">
         <td>{{ problem.title }}</td>
-        <td>{{ problem.difficulty }}</td>
-        <td>{{ problem.topic }}</td>
+        <td>{{ difficulties.find(x => x.id == problem.difficulty).name }}</td>
+        <td>{{ topics.find(x => x.id == problem.topic).name }}</td>
       </tr>
     </tbody>
   </table>
