@@ -16,7 +16,7 @@
   <script>  
   export default {
     props: {
-      id: Number,
+      id: String,
     },
     data() {
     return {
@@ -27,13 +27,13 @@
   },
   methods: {
     fetchData() {
-      fetch('http://localhost:4000/problems', {
-        method: "GET",
+        fetch('http://localhost:4000/problems', {
+        method: 'GET',
       })
         .then((response) => {
           response.json().then((data) => {
-            console.log(this.id)
-            this.problem = data.filter(x => x.id === this.id);
+            // Convertendo this.id para número antes de realizar a comparação
+            this.problem = data.find((x) => x.id == this.id);
           });
         })
         .catch((err) => {
