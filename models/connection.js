@@ -31,6 +31,9 @@ class Database {
                 const query = `INSERT INTO ${table} (${fields}) VALUES (${values});`;
 
                 const params = Object.values(data);
+
+                console.log(query);
+                console.log(params);
                 
                 this.db.run(query, params, (erro) => {
                     if (erro) {

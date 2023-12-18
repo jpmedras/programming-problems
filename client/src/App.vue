@@ -1,113 +1,87 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { toRaw } from 'vue';
-import { MuralPage } from './components/Mural.vue';
-import { RegisterPage } from './components/Register.vue';
-
-const API_URL = "http://localhost:4000";
-
-const problems = ref([]);
-const topics = ref([]);
-const difficulties = ref([]);
-
-const fetchProblems = async () => {
-  try {
-    const response = await fetch(API_URL + '/problems');
-    const data = await response.json();
-    problems.value = toRaw(data);
-  } catch (error) {
-    console.error('Error fetching:', error);
-  }
-};
-
-const fetchTopics = async () => {
-  try {
-    const response = await fetch(API_URL + '/topics');
-    const data = await response.json();
-    topics.value = toRaw(data);
-  } catch (error) {
-    console.error('Error fetching:', error);
-  }
-};
-
-const fetchDifficulties = async () => {
-  try {
-    const response = await fetch(API_URL + '/difficulties');
-    const data = await response.json();
-    difficulties.value = toRaw(data);
-  } catch (error) {
-    console.error('Error fetching:', error);
-  }
-};
-
-const pages = ref([]);
-onMounted(() => {
-  fetchProblems();
-  fetchTopics();
-  fetchDifficulties();
-  pages.value = [
-    { title: 'Mural', component: MuralPage, props: { problems, difficulties, topics }, },
-    { title: 'Register', component: RegisterPage, props: {}, },
-  ];
-});
-
-const activePage = ref(0)
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <nav>
-    <ul>
-        <li v-for="(page, index) in pages" :key="index">
-          <a
-            :class="{active: activePage == index}"
-            @click.prevent="activePage = index"
-          >
-            {{ page.title }}
-          </a>
-        </li>
-    </ul>
-  </nav>
-  <component
-    v-if="pages[activePage]?.component"
-    :is="pages[activePage].component"
-    v-bind="pages[activePage].props"
-  />
+  <header>
+    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
+
+    <div class="wrapper">
+      <HelloWorld msg="Programming Problems" />
+
+      <nav>
+        <!-- <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink> -->
+        <RouterLink to="/">Mural</RouterLink>
+        <RouterLink to="/register">Register</RouterLink>
+      </nav>
+    </div>
+  </header>
+
+  <RouterView />
 </template>
 
 <style scoped>
+header {
+  line-height: 1.5;
+  max-height: 100vh;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
 nav {
-    width: 100%;
-    background-color: #f2f2f2;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
 }
 
-nav > ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+nav a.router-link-exact-active {
+  color: var(--color-text);
 }
 
-nav > ul > li {
-    float: left;
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
 }
 
-nav > ul > li > a {
-    display: block;
-    color: #222222;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 1.2em;
-    transition: 0.4s;
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
 }
 
-nav > ul > li > a:hover {
-    background-color: #ddd;
-    color: black;
+nav a:first-of-type {
+  border: 0;
 }
 
-nav > ul > li > a.active {
-  background-color: #04AA6D;
-  color: white;
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
 }
 </style>
