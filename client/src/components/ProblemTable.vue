@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="problem in problems" :key="problem.id">
+      <tr v-for="problem in problems" :key="problem.id" @click="goToProblemDetail(problem.id)">
         <td>{{ problem.title }}</td>
         <td>{{ problem.difficulty }}</td>
         <td>{{ problem.topic }}</td>
@@ -27,6 +27,9 @@ export default {
     };
   },
   methods: {
+    goToProblemDetail(problemId) {
+      this.$router.push({ path: `/${problemId}` });
+    },
     fetchData() {
       fetch('http://localhost:4000/problems', {
         method: "GET",
