@@ -6,9 +6,10 @@
     <label>Difficulty:</label>
     <section
       v-for="(difficultyOption, index) in difficulties"
-      :key="index"
+      :key="difficultyOption.id"
+      class="radio-input"
     >
-      <input type="radio" :id="difficultyOption.name" :value="difficultyOption.name" v-model="this.difficulty" />
+      <input type="radio" :id="difficultyOption.name" :value="difficultyOption.id" v-model="this.difficulty" />
       <label :for="difficultyOption.name">{{ difficultyOption.name }}</label>
     </section>
 
@@ -66,7 +67,7 @@ export default {
 
       title: null,
       topic: null,
-      difficulty: null,
+      difficulty: 1,
       time: null,
       memory: null,
       input: null,
@@ -144,7 +145,7 @@ export default {
 </script>
 
 <style scoped>
-.inline-input {
+.radio-input {
   display: inline-block;
 }
 
