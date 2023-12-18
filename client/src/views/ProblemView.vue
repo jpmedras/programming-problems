@@ -1,15 +1,15 @@
 <template>
     <div>
-      <h2>{{ problem.title }}</h2>
-      <p>Difficulty: {{ problem.difficulty }}</p>
-      <p>Topic: {{ problem.topic }}</p>
-      <p>Input Description: {{ problem.inputDescription }}</p>
-      <p>Output Description: {{ problem.outputDescription }}</p>
-      <p>Time Limit: {{ problem.timeLimit }}</p>
-      <p>Memory Limit: {{ problem.memoryLimit }}</p>
-      <p>Statement: {{ problem.statement }}</p>
-      <p>Statement Input: {{ problem.statementInput }}</p>
-      <p>Statement Output: {{ problem.statementOutput }}</p>
+      <h2 v-if="problem.title" >{{ problem.title }}</h2>
+      <h3 v-if="problem.topic">Topic: {{ problem.topic }}</h3>
+      <h3 v-if="problem.difficulty">Difficulty: {{ problem.difficulty }}</h3>
+      <p v-if="problem.input">Input Description: {{ problem.input }}</p>
+      <p v-if="problem.output">Output Description: {{ problem.output }}</p>
+      <p v-if="problem.time">Time Limit: {{ problem.time }}</p>
+      <p v-if="problem.memory">Memory Limit: {{ problem.memory }}</p>
+      <p v-if="problem.statment">Statement: {{ problem.statment }}</p>
+      <p v-if="problem.statmentInput">Statement Input: {{ problem.statmentInput }}</p>
+      <p v-if="problem.statmentOutput">Statement Output: {{ problem.statmentOutput }}</p>
     </div>
   </template>
   
@@ -32,8 +32,7 @@
       })
         .then((response) => {
           response.json().then((data) => {
-            // Convertendo this.id para número antes de realizar a comparação
-            this.problem = data.find((x) => x.id == this.id);
+            this.problem = data.find(x => x.id == this.id);
           });
         })
         .catch((err) => {
