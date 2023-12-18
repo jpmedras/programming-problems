@@ -1,28 +1,24 @@
 <template>
-  <div class="hello">
-    <a
-      v-if="problems && topics && difficulties"
-      v-for="(problem, index) in problems"
-      :key="index"
-    >
-        <h3>Title: <span>{{ problem.title }}</span></h3>
-        <h4>Topic: <span>{{ topics.find(x => x.id === problem.topic).name }}</span></h4>
-        <h4>Difficulty: <span>{{ difficulties.find(x => x.id === problem.difficulty).name }}</span></h4>
-        <h5><span>time limit per test: {{ problem.time }}</span></h5>
-        <h5><span>memory limit per test: {{ problem.memory }}</span></h5>
-        <h5><span>input: {{ problem.input }}</span></h5>
-        <h5><span>output: {{ problem.output }}</span></h5>
-        <h6><span>Statment: {{ problem.statment }}</span></h6>
-        <h6><span>Statment (input): {{ problem.statmentInput }}</span></h6>
-        <h6><span>Statment (output):{{ problem.statmentOutput }}</span></h6>
-    </a>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Difficulty</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="problem in problems" :key="problem.id" @click="goToProblemDetail(problem.id)">
+        <td>{{ problem.title }}</td>
+        <td>{{ difficulties.find(x => x.id == problem.difficulty).name }}</td>
+        <td>{{ topics.find(x => x.id == problem.topic).name }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
+
 <script>
 export default {
-  props: {
-    msg: String,
-  },
   data() {
     return {
       problems: null,
@@ -31,6 +27,9 @@ export default {
     };
   },
   methods: {
+    goToProblemDetail(problemId) {
+      this.$router.push({ name: 'problem', params: { id: problemId } });
+    },
     fetchData() {
       fetch('http://localhost:4000/problems', {
         method: "GET",
@@ -77,14 +76,26 @@ export default {
   },
 };
 </script>
-<style>
-span {
-  color: black;
+
+<style scoped>
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px; /* Adicionei uma margem superior para espaçamento visual */
 }
 
-button {
-padding: 12px 32px;
-font-size: 16px;
-border-radius: 8px;
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #eee;
+  cursor: pointer;
 }
 </style>
