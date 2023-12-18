@@ -13,16 +13,63 @@
     </div>
   </template>
   
-  <script>
-  import { ref, onMounted } from 'vue';
-  
+  <script>  
   export default {
     props: {
-      id: {
-        type: Number,
-        required: true,
-      },
+      id: Number,
     },
-  };
-  </script>
+    data() {
+    return {
+      problems: null,
+      topics: null,
+      difficulties: null
+    };
+  },
+  methods: {
+    fetchData() {
+      fetch('http://localhost:4000/problems', {
+        method: "GET",
+      })
+        .then((response) => {
+          response.json().then((data) => {
+            this.problems = data;
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      fetch('http://localhost:4000/topics', {
+        method: "GET",
+      })
+        .then((response) => {
+          response.json().then((data) => {
+            this.topics = data;
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      fetch('http://localhost:4000/difficulties', {
+        method: "GET",
+      })
+        .then((response) => {
+          response.json().then((data) => {
+            this.difficulties = data;
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
+    filter(data) {
+      return this.problems
+        .filter((problem) => problem[data.prop] == data.value)
+    }
+  },
+  beforeMount() {
+   this.fetchData();
+  },
+};
+</script>
   
