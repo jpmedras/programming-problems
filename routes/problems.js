@@ -7,6 +7,7 @@ function getAll() {
 }
 
 function create(problem) {
+    console.log(problem)
     return db.insert(table, problem);
 }
 

@@ -1,72 +1,71 @@
 <template>
-    <div class="from">
-    <label>Title:</label>
-    <input v-model="this.title" placeholder="LOL Lovers" />
+  <div id="form">
+  <label>Title:</label>
+  <input v-model="this.title" placeholder="LOL Lovers">
 
-    <label>Difficulty:</label>
-    <section
-      v-for="(difficultyOption, index) in difficulties"
-      :key="difficultyOption.id"
-      class="radio-input"
-    >
-      <input type="radio" :id="difficultyOption.name" :value="difficultyOption.id" v-model="this.difficulty" />
-      <label :for="difficultyOption.name">{{ difficultyOption.name }}</label>
-    </section>
-
-
-    <label>Topic:</label>
-    <select v-model="this.topic">
+  <label>Topic:</label>
+  <select v-model="this.topic">
     <option
       v-for="(topicOption, index) in this.topics"
       :key="index"
-      :value="topicOption.name"
+      :value="topicOption.id"
     >
       {{ topicOption.name }}
     </option>
-    </select>
+  </select>
 
+  <label>Difficulty:</label>
+  <section
+    v-for="(difficultyOption, index) in difficulties"
+    :key="difficultyOption.id"
+    class="radio-input"
+  >
+    <input type="radio" :id="difficultyOption.name" :value="difficultyOption.id" v-model="this.difficulty">
+    <label :for="difficultyOption.name">{{ difficultyOption.name }}</label>
+  </section>
 
-    <label>Time limit per test:</label>
-    <input v-model="this.time" placeholder="3 seconds" />
+  <label>Time limit per test:</label>
+  <input v-model="this.time" placeholder="3 seconds">
 
-    <label>Memory limit per test:</label>
-    <input v-model="this.memory" placeholder="1024 megabytes" />
-    
-    <label>Input:</label>
-    <input v-model="this.input" placeholder="standard input" />
+  <label>Memory limit per test:</label>
+  <input v-model="this.memory" placeholder="1024 megabytes">
 
-    <label>Output:</label>
-    <input v-model="this.output" placeholder="standard input" />
+  <label>Input:</label>
+  <input v-model="this.input" placeholder="standard input">
 
-    <label style="white-space: pre-line;">Statment:</label>
-    <div>
-        <textarea v-model="this.statment" placeholder="Problem statment"></textarea>
+  <label>Output:</label>
+  <input v-model="this.output" placeholder="standard output">
 
-        <label style="white-space: pre-line;">Input:</label>
-        <textarea v-model="this.statmentInput" placeholder="Input description"></textarea>
+  <label style="white-space: pre-line;">Statment:</label>
+  <textarea v-model="this.statment" placeholder="Problem statment"></textarea>
 
-        <label style="white-space: pre-line;">Output:</label>
-        <textarea v-model="this.statmentOutput" placeholder="Output description"></textarea>
-    </div>
+  <label style="white-space: pre-line;">Input:</label>
+  <textarea v-model="this.statmentInput" placeholder="Input description"></textarea>
 
-    <button
-        type="submit"
-        @click="this.submitForm()"
-    >
-        Submit
-    </button>
-    </div>
+  <label style="white-space: pre-line;">Output:</label>
+  <textarea v-model="this.statmentOutput" placeholder="Output description"></textarea>
+
+  <button
+    type="submit"
+    @click="this.submitForm()"
+  >
+    Submit
+  </button>
+  <p v-if="!this.status">Try again...</p>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      status: true,
+
       topics: null,
       difficulties: null,
 
       title: null,
-      topic: null,
+      topic: 1,
       difficulty: 1,
       time: null,
       memory: null,
@@ -86,28 +85,29 @@ export default {
             this.statment.trim() === '' ||
             this.statmentInput.trim() === '' ||
             this.statmentOutput.trim() === ''
-            ) { return; }
-
-            let data = {};
-            this.title && (data.title = this.title);
-            this.topic && (data.topic = this.topics.find(x => x.name === this.topic).id);
-            this.difficulty && (data.difficulty = this.difficulties.find(x => x.name === this.difficulty).id);
-            this.statment && (data.statment = this.statment);
-            this.statment && (data.statment = this.statment);
-            this.statmentInput && (data.statmentInput = this.statmentInput);
-            this.statmentOutput && (data.statmentOutput = this.statmentOutput);
-
-            console.log(data);
+            ) {
+              this.resp = 0;
+              return; 
+            }
 
             fetch('http://localhost:4000/problems', {
                 method: "POST",
-                body: data,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  title: this.title,
+                  topic: this.topic,
+                  difficulty: this.difficulty,
+                  time: this.time,
+                  memory: this.memory,
+                  input: this.input,
+                  output: this.output,
+                  statment: this.statment,
+                  statmentInput: this.statmentInput,
+                  statmentOutput: this.statmentOutput,
+                }),
             })
-            .then((response) => {
-            //   response.json().then((data) => {
-            //     this.problems = data;
-            //   });
-            })
+            .then(response => response.json())
+            .then(data => this.resp = data)
             .catch((err) => {
               console.error(err);
             });
@@ -145,13 +145,8 @@ export default {
 </script>
 
 <style scoped>
-.radio-input {
+#form {
   display: inline-block;
-}
-
-select, label, input {
-  display: block;
-  margin: 5px;
 }
 
 input,
@@ -159,18 +154,23 @@ textarea {
   font-family: 'Courier New', Courier, monospace;
 }
 
-input,
-select,
-textarea,
-button {
-  margin-bottom: 10px;
+label {
+  display: block;
+  margin-bottom: 5px; /* Adicionei uma margem inferior menor entre os rótulos */
+}
+
+input, select, textarea, button {
+  width: 100%;
+  margin-bottom: 10px; /* Adicionei uma margem inferior para separação vertical */
+}
+
+section > input, section > label {
+  width: auto;
+  display: inline;
+  margin-right: 3px;
 }
 
 button {
   cursor: pointer;
-}
-
-div {
-  margin: 20px;
 }
 </style>
