@@ -2,5 +2,7 @@
 A web application to manage programming problems
 
 `node index.js`
-`cd client'
+
+`cd client`
+
 `npm run dev`
