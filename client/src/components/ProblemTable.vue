@@ -93,4 +93,9 @@ th, td {
 th {
   background-color: #f2f2f2;
 }
+
+tr:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
 </style>
